@@ -1,5 +1,7 @@
-
 -- Q4: Top Products by Net Revenue (After Refunds)
+-- Owner: <your name>  |  Last updated: 2026-07-09
+-- Sanity check: sum(gross_revenue) across all products equals
+-- sum(qty * unit_price) from ecom.order_items for the same window, within 0.5%.
 
 with product_revenue as (
     select
@@ -26,14 +28,23 @@ with product_revenue as (
     group by 1
 )
 
+, return_item_shares as (
+    select
+        ri.return_id
+      , ri.variant_id
+      , ri.line_total
+      , ri.line_total * 1.0 / nullif(sum(ri.line_total) over (partition by ri.return_id), 0) as line_total_share
+    from ecom.return_items ri
+)
+
 , product_refunds as (
     select
         p.product_id
-      , sum(rf.amount) as refunds_amount
+      , sum(rf.amount * ris.line_total_share) as refunds_amount
     from ecom.refunds rf
     join ecom.return_requests rr on rf.order_id = rr.order_id
-    join ecom.return_items ri on rr.return_id = ri.return_id
-    join ecom.product_variants pv on ri.variant_id = pv.variant_id
+    join return_item_shares ris on rr.return_id = ris.return_id
+    join ecom.product_variants pv on ris.variant_id = pv.variant_id
     join ecom.products p on pv.product_id = p.product_id
     group by 1
 )
