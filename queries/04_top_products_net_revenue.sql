@@ -28,13 +28,25 @@ with product_revenue as (
     group by 1
 )
 
-, return_item_shares as (
+, return_item_prices as (
     select
         ri.return_id
       , ri.variant_id
-      , ri.line_total
-      , ri.line_total * 1.0 / nullif(sum(ri.line_total) over (partition by ri.return_id), 0) as line_total_share
+      , ri.qty
+      , oi.unit_price
+      , (ri.qty * oi.unit_price) as line_total
     from ecom.return_items ri
+    join ecom.return_requests rr on ri.return_id = rr.return_id
+    join ecom.order_items oi on rr.order_id = oi.order_id and ri.variant_id = oi.variant_id
+)
+
+, return_item_shares as (
+    select
+        return_id
+      , variant_id
+      , line_total
+      , line_total * 1.0 / nullif(sum(line_total) over (partition by return_id), 0) as line_total_share
+    from return_item_prices
 )
 
 , product_refunds as (
