@@ -1,5 +1,5 @@
 -- Q9: Repeat Purchase Interval
--- Owner: <your name>  |  Last updated: 2026-07-09
+-- Owner: RAJ DEV  |  Last updated: 2026-07-09
 -- Sanity check: days_to_next_order >= 0 on every row; median <= p90 in summary.
 
 -- === Row-level output ===
