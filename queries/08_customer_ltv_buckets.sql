@@ -1,6 +1,6 @@
 
 -- Q8: Customer LTV + Bucket Share of Revenue
--- Owner: <your name>  |  Last updated: 2026-07-08
+-- Owner: RAJ DEV  |  Last updated: 2026-07-08
 -- Sanity check: sum(total_revenue) equals revenue from ecom.orders (excluding
 -- cancelled), within 0.5%. ltv_bucket_share_of_revenue sums to 1.0 across buckets.
 
