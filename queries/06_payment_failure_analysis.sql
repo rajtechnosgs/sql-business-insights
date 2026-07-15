@@ -1,5 +1,5 @@
 -- Q6: Payment Failure Analysis (Method × Top Error Code)
--- Owner: <your name>  |  Last updated: 2026-07-08
+-- Owner: RAJ DEV |  Last updated: 2026-07-08
 -- Sanity check: failure_rate and top_error_share_of_failures both in [0, 1].
 
 with method_attempts as (
