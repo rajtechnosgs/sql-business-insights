@@ -1,5 +1,8 @@
-
--- Q2: Monthly Signup Cohort Retention 
+-- Q2: Monthly Signup Cohort Retention
+-- Owner: Raj Dev  |  Last updated: 2026-07-09
+-- Sanity check: cohort_size for any month equals count(distinct customer_id)
+-- from customers where date_trunc('month', created_at) = cohort_month.
+-- All retention rates in [0, 1]. Censored cells are NULL, not 0.
 
 with customer_signup as (
     select
