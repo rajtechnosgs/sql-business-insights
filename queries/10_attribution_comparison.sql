@@ -1,5 +1,5 @@
 -- Q10: Attribution Comparison — First-Touch vs Last-Touch Revenue by Channel
--- Owner: <your name>  |  Last updated: 2026-07-08
+-- Owner: RAJ DEV |  Last updated: 2026-07-08
 -- Sanity check: total revenue under first_touch equals total under last_touch
 -- equals total non-cancelled revenue in ecom.orders, within 0.5%.
 
