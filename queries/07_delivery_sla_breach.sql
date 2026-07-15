@@ -1,6 +1,6 @@
 
 -- Q7: Delivery SLA Breach by Carrier × Shipping Method
--- Owner: <your name>  |  Last updated: 2026-07-08
+-- Owner: RAJ DEV  |  Last updated: 2026-07-08
 -- Sanity check: avg_delivery_days <= p90_delivery_days on every row; late_rate in [0, 1].
 
 with delivery_stats as (
