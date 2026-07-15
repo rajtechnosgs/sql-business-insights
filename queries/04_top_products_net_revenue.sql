@@ -1,5 +1,5 @@
 -- Q4: Top Products by Net Revenue (After Refunds)
--- Owner: <your name>  |  Last updated: 2026-07-09
+-- Owner: RAJ DEV  |  Last updated: 2026-07-09
 -- Sanity check: sum(gross_revenue) across all products equals
 -- sum(qty * unit_price) from ecom.order_items for the same window, within 0.5%.
 
