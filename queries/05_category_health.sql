@@ -1,6 +1,6 @@
 
 -- Q5: Category Health — Purchases → Returns
--- Owner: <your name>  |  Last updated: 2026-07-07
+-- Owner: RAJ DEV  |  Last updated: 2026-07-07
 -- Sanity check: return_rate_pct between 0 and 100. returns <= orders_with_category
 -- for every category. sum(revenue) equals sum(line_total) from ecom.order_items
 -- on paid orders, within 0.5%.
