@@ -1,5 +1,5 @@
 -- Q1: Daily Business Summary + DoD / Same-Weekday WoW Comparisons
--- Owner: <your name>  |  Last updated: 2026-07-05
+-- Owner: RAJ DEV |  Last updated: 2026-07-05
 -- Sanity check: paid_order_rate between 0 and 1 on every row;
 -- sum(orders) across all days equals count(*) of ecom.orders for the same window.
 
