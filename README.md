@@ -2,7 +2,7 @@
 
 A 10-query business analytics SQL project built on a 10,000-customer / 40,000-order / 100,000-session e-commerce dataset (`ecom` schema). Each query answers a real business question (from CEO-level revenue summaries to marketing attribution), is sanity-checked, and interpreted in [`INTERPRETATIONS.md`](INTERPRETATIONS.md).
 
-Full write-up with 5 key insights: **[What 10 SQL Queries Told Me About This Business](<PASTE YOUR notion.site LINK HERE>)**
+Full write-up with 5 key insights: **[What 10 SQL Queries Told Me About This Business](https://sharp-postage-351.notion.site/What-10-SQL-Queries-Told-Me-About-This-Business-39ddb0c6f8c280fc8010cc98517001c3)**
 
 Connect with me: [www.linkedin.com/in/raj-dev-63963a22b](https://www.linkedin.com/in/raj-dev-63963a22b)
 
