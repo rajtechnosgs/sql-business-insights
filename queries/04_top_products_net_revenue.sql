@@ -1,5 +1,5 @@
 -- Q4: Top Products by Net Revenue (After Refunds)
--- Owner: RAJ DEV  |  Last updated: 2026-07-09
+-- Owner: Raj Dev  |  Last updated: 2026-07-17
 -- Sanity check: sum(gross_revenue) across all products equals
 -- sum(qty * unit_price) from ecom.order_items for the same window, within 0.5%.
 
@@ -28,35 +28,23 @@ with product_revenue as (
     group by 1
 )
 
-, return_item_prices as (
+, order_line_shares as (
     select
-        ri.return_id
-      , ri.variant_id
-      , ri.qty
-      , oi.unit_price
-      , (ri.qty * oi.unit_price) as line_total
-    from ecom.return_items ri
-    join ecom.return_requests rr on ri.return_id = rr.return_id
-    join ecom.order_items oi on rr.order_id = oi.order_id and ri.variant_id = oi.variant_id
-)
-
-, return_item_shares as (
-    select
-        return_id
-      , variant_id
-      , line_total
-      , line_total * 1.0 / nullif(sum(line_total) over (partition by return_id), 0) as line_total_share
-    from return_item_prices
+        oi.order_id
+      , oi.variant_id
+      , (oi.qty * oi.unit_price)                                            as line_total
+      , (oi.qty * oi.unit_price) * 1.0
+            / nullif(sum(oi.qty * oi.unit_price) over (partition by oi.order_id), 0) as line_total_share
+    from ecom.order_items oi
 )
 
 , product_refunds as (
     select
         p.product_id
-      , sum(rf.amount * ris.line_total_share) as refunds_amount
-    from ecom.refunds rf
-    join ecom.return_requests rr on rf.order_id = rr.order_id
-    join return_item_shares ris on rr.return_id = ris.return_id
-    join ecom.product_variants pv on ris.variant_id = pv.variant_id
+      , sum(orf.refund_amount * ols.line_total_share) as refunds_amount
+    from ecom.order_refunds orf
+    join order_line_shares ols on orf.order_id = ols.order_id
+    join ecom.product_variants pv on ols.variant_id = pv.variant_id
     join ecom.products p on pv.product_id = p.product_id
     group by 1
 )
