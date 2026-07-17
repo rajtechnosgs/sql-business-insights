@@ -1,5 +1,5 @@
 -- Q1: Daily Business Summary + DoD / Same-Weekday WoW Comparisons
--- Owner: RAJ DEV |  Last updated: 2026-07-05
+-- Owner: Raj Dev  |  Last updated: 2026-07-17
 -- Sanity check: paid_order_rate between 0 and 1 on every row;
 -- sum(orders) across all days equals count(*) of ecom.orders for the same window.
 
@@ -11,6 +11,7 @@ with daily_orders as (
       , count(*) filter (where o.payment_status = 'paid')          as paid_orders
       , count(*) filter (where lower(o.status) = 'cancelled')      as cancelled_orders
     from ecom.orders o
+    where o.created_at >= (select max(created_at) from ecom.orders) - interval '90 days'
     group by 1
 )
 
@@ -19,6 +20,7 @@ with daily_orders as (
         date_trunc('day', r.created_at)::date as order_date
       , sum(r.amount)                          as refunds_amount
     from ecom.refunds r
+    where r.created_at >= (select max(created_at) from ecom.orders) - interval '90 days'
     group by 1
 )
 
