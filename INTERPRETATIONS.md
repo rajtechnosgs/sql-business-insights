@@ -95,31 +95,13 @@ funnel problem points to a shared fix.
 
 ## Q4 — Top Products by Net Revenue (After Refunds)
 
-**⚠️ Not finalized — data quality issue found.** The result you sent shows
-`refunds_amount = 0` for all 4,000 products, which conflicts with the
-known correct refund total (~₹11.97L) confirmed earlier. This means the
-`return_item_prices` join (linking `return_items` → `return_requests` →
-`order_items`) isn't matching any rows — likely a column name or join
-condition mismatch. **This section needs to be rewritten once the query is
-re-run with correct refund numbers** — writing an interpretation now would
-just document a wrong result as if it were real.
+**What the query does (1 sentence):** Ranks products by revenue net of refunds, by aggregating gross revenue, returns, and refunds in three separate CTEs before combining them.
 
-**What the query does (1 sentence):** Ranks products by revenue net of
-refunds, by aggregating gross revenue, returns, and refunds in three
-separate CTEs before combining them.
+**Pattern choice (1–2 sentences):** Kept revenue, returns, and refunds as three independent CTEs (`product_revenue`, `product_returns`, `product_refunds`) rather than one multi-join query, since joining all three raw tables directly would multiply rows and inflate the revenue numbers. Refund amounts are allocated proportionally across a return's items by `line_total` share, since `refunds.amount` is stored at the return level, not the item level.
 
-**Pattern choice (1–2 sentences):** Kept revenue, returns, and refunds as
-three independent CTEs (`product_revenue`, `product_returns`,
-`product_refunds`) rather than one multi-join query, since joining all
-three raw tables directly would multiply rows and inflate the revenue
-numbers. Refund amounts are allocated proportionally across a return's
-items by `line_total` share, since `refunds.amount` is stored at the
-return level, not the item level.
+**Business interpretation (2–3 sentences):** Eastlight Clarity ANC Headphones generated the highest net revenue (₹921.5K), helped by virtually no returns and only a negligible refund adjustment. Most of the top-performing products retained nearly all of their gross revenue after refunds, although a few—such as Marigold Home Craft Lite Wireless Earbuds and Vastra Craft Pulse Kids Smartwatch—experienced noticeably larger refund deductions despite remaining among the highest revenue generators. This suggests that while these products sell exceptionally well, monitoring the drivers of refunds could further improve their profitability.
 
-**Business interpretation:** *(pending — will fill in once refunds_amount
-is populated correctly)*
-
-**What I'd ask next:** *(pending)*
+**What I'd ask next:** Are the products with the largest refund deductions experiencing quality issues, fulfillment problems, or customer expectation mismatches? Comparing refund amount per unit sold and the most common return reasons for these high-revenue products would help identify where profitability can be improved without sacrificing sales.
 
 ---
 
@@ -270,33 +252,13 @@ win-back campaigns often outperform a single fixed-day trigger.
 
 ## Q10 — Attribution Comparison: First-Touch vs Last-Touch Revenue by Channel
 
-**What the query does (1 sentence):** Compares how revenue is allocated
-across channels under first-touch attribution (which channel started the
-journey) versus last-touch (which channel closed the sale).
+**What the query does (1 sentence):** Compares how revenue is allocated across channels under first-touch attribution (which channel started the journey) versus last-touch attribution (which channel closed the sale).
 
-**Pattern choice (1–2 sentences):** Used two separate `ROW_NUMBER()`
-partitions on `attribution_touches` — one ordered ascending by touch time
-for first-touch, one descending for last-touch — joined back to
-per-customer revenue and combined with `UNION ALL` so both models appear
-as comparable rows per channel. Customers with no attribution touch were
-bucketed as `'direct'` rather than dropped.
+**Pattern choice (1–2 sentences):** Used two separate `ROW_NUMBER()` partitions on `attribution_touches` — one ordered ascending by touch time for first-touch, one descending for last-touch — joined back to per-customer revenue and combined with `UNION ALL` so both models appear as comparable rows per channel. Customers with no attribution touch were bucketed as `'direct'` rather than dropped.
 
-**Business interpretation (2–3 sentences):** Organic is the clearest
-"opener" channel: it earns 40.2% of first-touch revenue credit but only
-38.7% under last-touch — a real 1.5-point drop, meaning it's better at
-starting journeys than closing them. Email shows the opposite and more
-pronounced pattern: its share rises from 6.27% (first-touch) to 7.16%
-(last-touch), roughly a 14% relative increase — email is disproportionately
-a *closing* channel. Paid and referral stay almost flat across both models
-(paid: 35.9% → 36.1%), suggesting they play a fairly balanced role
-throughout the journey rather than skewing toward either end.
+**Business interpretation (2–3 sentences):** Organic remains the strongest acquisition channel, but its revenue share falls from 40.19% under first-touch to 39.62% under last-touch (−0.58 percentage points), indicating it is slightly better at initiating customer journeys than receiving final conversion credit. Email shows the clearest closing-channel behavior: its share rises from 6.27% to 7.13% (+0.86 points), a 13.7% relative increase, meaning customers exposed to email are disproportionately likely to complete purchases through that channel. Referral also gains credit at the end of the journey (11.51% → 12.26%), while affiliate and paid lose a small share under last-touch, suggesting they contribute more to acquisition than final conversion.
 
-**What I'd ask next:** If marketing reporting currently defaults to
-last-touch only, is organic's true value being underweighted in budget
-decisions by roughly 1.5 points of revenue credit? Testing a modest
-reallocation toward organic (or a blended attribution model) could reveal
-whether last-touch has been quietly starving the channel that actually
-brings people in.
+**What I'd ask next:** If marketing performance is currently evaluated using last-touch attribution only, are organic and paid campaigns being slightly undervalued while email and referral receive additional closing credit? Comparing customer acquisition cost (CAC) and return on ad spend under a blended attribution model would help determine whether marketing budget should be reallocated.
 
 ---
 
