@@ -6,6 +6,12 @@ Full write-up with 5 key insights: **[What 10 SQL Queries Told Me About This Bus
 
 Connect with me: [www.linkedin.com/in/raj-dev-63963a22b](https://www.linkedin.com/in/raj-dev-63963a22b)
 
+## Top Business Insights
+
+- **Retention is the real leak, not acquisition.** Month-1 retention fell from 50.2% (March cohort) to just 18.2% (May cohort) even as signups grew — the business is filling the funnel faster than it's keeping people engaged. *(Q2)*
+- **Revenue is dangerously concentrated.** The top LTV bucket (`20000+`) is only 39.7% of customers but drives 88.4% of total revenue — losing a small slice of this segment would hurt far more than losing most of the rest of the customer base. *(Q8)*
+- **Operational friction is concentrated, not spread out.** One payment method (UPI, 5.54% failure rate) and one carrier (EcomExpress, up to 21.4% late) are each responsible for an outsized share of a much bigger problem — meaning targeted fixes, not broad overhauls, would move the numbers. *(Q6, Q7)*
+
 ## Database Schema
 
 ```mermaid
@@ -43,7 +49,13 @@ erDiagram
 **Q6 — Payment Failure Analysis**
 ![Payment Failure](screenshots/Q6.webp)
 
-**Q8 — Customer LTV + Bucket Share of Revenue**
-![LTV Bucket Share](screenshots/q8.webp)
+**Q8 — Customer LTV Bucket Share of Revenue**
+
+| LTV Bucket | Customers | % of Customers | % of Revenue |
+|---|---|---|---|
+| 20000+ | 3,349 | 39.7% | 88.4% |
+| 5000-19999 | 2,544 | 30.1% | 9.5% |
+| 1000-4999 | 2,047 | 24.3% | 2.0% |
+| 0-999 | 498 | 5.9% | 0.1% |
 
 ## Repo Structure
